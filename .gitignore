@@ -1,0 +1,15 @@
+tasks
+Stem-team
+dataset
+cache
+.vscode
+__pycache__
+models
+md
+env
+perplexity
+Stem-team
+*.ipynb
+*.zip
+*.json
+tokenizers
