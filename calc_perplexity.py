@@ -100,7 +100,8 @@ def multi_loop_func(model, tokenizer, vocabs: dict, vocabs_length:int, model_nam
     all_slits = [i for i in range(min_range, max_range, split_size)]
     all_slits.append(max_range)
     for i in range(len(all_slits)-1):
-        path = os.path.join(main_dir,"perplexity",'models', model_name, f"vocabs_info_{all_slits[i]}_{all_slits[i+1]}.json")
+        saved_model_name = model_name.replace('/', '-')
+        path = os.path.join(main_dir,"perplexity",'models', saved_model_name, f"vocabs_info_{all_slits[i]}_{all_slits[i+1]}.json")
         if os.path.exists(path):
             print(f'skipping {all_slits[i] } to {all_slits[i+1] }')
             continue
