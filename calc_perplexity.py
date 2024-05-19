@@ -96,6 +96,11 @@ def loop_func(model, tokenizer, vocabs: dict, vocabs_length:int, model_name:str,
     json.dump(vocabs_info, open(json_path, "w", encoding="utf-8"), ensure_ascii=False, indent=4)
     return vocabs_info
 
+def multi_loop_func(model, tokenizer, vocabs: dict, vocabs_length:int, model_name:str, min_range:int, max_range:int, main_dir: str=None, split_size:int = 1000):
+    all_slits = [i for i in range(min_range, max_range, split_size)]
+    all_slits.append(max_range)
+    for i in range(len(all_slits)-1):
+        loop_func(model, tokenizer, vocabs, vocabs_length, model_name, all_slits[i], all_slits[i+1], main_dir)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
