@@ -88,7 +88,7 @@ def loop_func(model, tokenizer, vocabs: dict, vocabs_length:int, model_name:str,
         vocabs_info[vocabs[i]] = token_info
     
     if main_dir == None:
-        main_dir = os.getcwd()
+        main_dir = os.path.join(os.getcwd(), "output")
     
     path = os.path.join(main_dir,"perplexity",'models', model_name)
     os.makedirs(path, exist_ok=True)
