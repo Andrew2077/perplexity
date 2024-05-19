@@ -24,7 +24,8 @@ if __name__ == "__main__":
     parser.add_argument("--model_name", type=str, default="gpt2", help="model name")
     parser.add_argument("--min_range", type=int, default=0, help="min range")
     parser.add_argument("--max_range", type=int, default=-1, help="max range")
-    parser.add_argument("--load_in", type=str, default="float16", help="load in")
+    parser.add_argument("--load_in", type=str, default="4bit", help="load in")
+    parser.add_argument("--main_dir", type=str, default=None)
 
     args = parser.parse_args()
     

@@ -9,11 +9,11 @@ def run_command(command):
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
-    argparser.add_argument("--model_name", type=str, help="model name")
+    argparser.add_argument("--model_name", type=str, help="model name", default="openai-community/gpt2")
     argparser.add_argument("--load_in", type=str, default="4bit")
-    argparser.add_argument("--total_size", type=int)
-    argparser.add_argument("--splits", type=int)
-    argparser.add_argument("--split_size", type=int)
+    argparser.add_argument("--total_size", type=int, default=5000)
+    argparser.add_argument("--splits", type=int, default=2)
+    argparser.add_argument("--split_size", type=int, default=1000)
     argparser.add_argument("--output_dir", type=str)
     args = argparser.parse_args()
 
@@ -25,9 +25,11 @@ if __name__ == "__main__":
     PART = TOTAL_SIZE // SPLITS
 
     command_list = []
+    download_model_command = f'python get_inference_usage.py --model_name {args.model_name} --min_range 0 --max_range 10 --load_in "{args.load_in}" --main_dir "{args.output_dir}"'
+    subprocess.Popen(download_model_command, shell=True).communicate()
+    
     for split in range(SPLITS):
-        model_name = f"{args.model_name}_{split}"
-        command = f'python calc_perplexity.py --model_name "{model_name}" --min_range {split*PART} --max_range {(split+1)*PART} --split_size {args.split_size} --load_in "{args.load_in}" "{args.output_dir}"'
+        command = f'python calc_perplexity.py --model_name "{args.model_name}" --min_range {split*PART} --max_range {(split+1)*PART} --split_size {args.split_size} --load_in "{args.load_in}" --main_dir "{args.output_dir}"'
         command_list.append(command)
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
