@@ -107,8 +107,13 @@ if __name__ == "__main__":
     parser.add_argument("--model_name", type=str, default="gpt2", help="model name")
     parser.add_argument("--min_range", type=int, default=0, help="min range")
     parser.add_argument("--max_range", type=int, default=-1, help="max range")
-    parser.add_argument("--load_in", type=str, default="float16", help="load in")
+    parser.add_argument("--load_in", type=str, default="float16")
+    parser.add_argument("--main_dir", type=str, default=None)
+    parser.add_argument("--split_size", type=int, default=None)
     args = parser.parse_args()
     MODEL, TOKENIZE = create_model(args.model_name, "auto", args.load_in)
     VOCABS, VOCAB_SIZE = get_vocabs(TOKENIZE)
-    loop_func(MODEL, TOKENIZE, VOCABS, VOCAB_SIZE, args.model_name, args.min_range, args.max_range)
+    if args.split_size:
+        multi_loop_func(MODEL, TOKENIZE, VOCABS, VOCAB_SIZE, args.model_name, args.min_range, args.max_range, main_dir=args.main_dir, split_size=args.split_size)
+    else:
+        loop_func(MODEL, TOKENIZE, VOCABS, VOCAB_SIZE, args.model_name, args.min_range, args.max_range, main_dir=args.main_dir)
